@@ -12,6 +12,10 @@ local altkey = "Mod1"
 -- define module table
 local keys = {}
 
+-- Define Directories
+local script_dir = os.getenv("HOME") .. "/.config/scripts/"
+local local_bin = os.getenv("HOME") .. "/.local/bin/"
+
 -- Move given client to given direction
 local function move_client(c, direction)
   -- If client is floating, move to edge
@@ -109,6 +113,32 @@ keys.globalkeys = gears.table.join(
     end,
     { description = "application launcher", group = "launcher" }
   ),
+  -- launch browser
+  awful.key({ modkey }, "q",
+    function()
+      awful.spawn(apps.browser)
+    end,
+    { description = "open browser", group = "launcher" }
+  ),
+  awful.key({ modkey, "Shift" }, "q",
+    function()
+      awful.spawn(apps.browser2)
+    end,
+    { description = "open browser", group = "launcher" }
+  ),
+  awful.key({ modkey }, "e",
+    function()
+      awful.spawn(apps.filebrowser)
+    end,
+    { description = "open file browser", group = "launcher" }
+  ),
+  awful.key({ modkey }, "x",
+    function()
+      awful.spawn(local_bin .. "powermenu")
+    end,
+    { description = "open file browser", group = "launcher" }
+  ),
+
 
   -- =========================================
   -- FUNCTION KEYS
@@ -131,46 +161,47 @@ keys.globalkeys = gears.table.join(
   -- ALSA volume control
   awful.key({}, "XF86AudioRaiseVolume",
     function()
-      awful.spawn("amixer -D pulse sset Master 5%+", false)
+      awful.spawn(local_bin .. "soundvolume up")
       awesome.emit_signal("volume_change")
     end,
     { description = "volume up", group = "hotkeys" }
   ),
   awful.key({}, "XF86AudioLowerVolume",
     function()
-      awful.spawn("amixer -D pulse sset Master 5%-", false)
+      awful.spawn(local_bin .. "soundvolume down")
       awesome.emit_signal("volume_change")
     end,
     { description = "volume down", group = "hotkeys" }
   ),
   awful.key({}, "XF86AudioMute",
     function()
-      awful.spawn("amixer -D pulse set Master 1+ toggle", false)
+      awful.spawn(local_bin .. "soundvolume mute")
       awesome.emit_signal("volume_change")
     end,
     { description = "toggle mute", group = "hotkeys" }
   ),
-  awful.key({}, "XF86AudioNext",
+  awful.key({ modkey }, "XF86AudioMute",
     function()
-      awful.spawn("mpc next", false)
+      awful.spawn(local_bin .. "micvolume mute")
+      awesome.emit_signal("volume_change")
     end,
-    { description = "next music", group = "hotkeys" }
+    { description = "toggle mute", group = "hotkeys" }
   ),
-  awful.key({}, "XF86AudioPrev",
+  awful.key({ modkey }, "F1",
     function()
-      awful.spawn("mpc prev", false)
+      awful.spawn(local_bin .. "micvolume mute")
+      awesome.emit_signal("volume_change")
     end,
-    { description = "previous music", group = "hotkeys" }
-  ),
-  awful.key({}, "XF86AudioPlay",
-    function()
-      awful.spawn("mpc toggle", false)
-    end,
-    { description = "play/pause music", group = "hotkeys" }
+    { description = "toggle mute", group = "hotkeys" }
   ),
 
   -- Screenshot on prtscn using scrot
   awful.key({}, "Print",
+    function()
+      awful.util.spawn(apps.screenshot, false)
+    end
+  ),
+  awful.key({ modkey, "Shift" }, "s",
     function()
       awful.util.spawn(apps.screenshot, false)
     end
@@ -187,7 +218,7 @@ keys.globalkeys = gears.table.join(
   ),
 
   -- Quit Awesome
-  awful.key({ modkey }, "Escape",
+  awful.key({ modkey, altkey }, "w",
     function()
       -- emit signal to show the exit screen
       awesome.emit_signal("show_exit_screen")
@@ -286,7 +317,7 @@ keys.globalkeys = gears.table.join(
   -- =========================================
 
   -- Focus screen by index (cycle through screens)
-  awful.key({ modkey }, "s",
+  awful.key({ modkey, "Shift" }, "o",
     function()
       awful.screen.focus_relative(1)
     end
@@ -400,13 +431,13 @@ keys.globalkeys = gears.table.join(
   -- Gap control
   awful.key({ modkey, "Shift" }, "minus",
     function()
-      awful.tag.incgap(5, nil)
+      awful.tag.incgap(1, nil)
     end,
     { description = "increment gaps size for the current tag", group = "gaps" }
   ),
   awful.key({ modkey }, "minus",
     function()
-      awful.tag.incgap(-5, nil)
+      awful.tag.incgap(-1, nil)
     end,
     { description = "decrement gap size for the current tag", group = "gaps" }
   ),
@@ -428,23 +459,6 @@ keys.globalkeys = gears.table.join(
       awful.layout.inc(-1)
     end,
     { description = "select previous", group = "layout" }
-  ),
-
-  -- =========================================
-  -- CLIENT MINIMIZATION
-  -- =========================================
-
-  -- restore minimized client
-  awful.key({ modkey, "Shift" }, "n",
-    function()
-      local c = awful.client.restore()
-      -- Focus restored client
-      if c then
-        client.focus = c
-        c:raise()
-      end
-    end,
-    { description = "restore minimized", group = "client" }
   )
 )
 
@@ -501,28 +515,11 @@ keys.clientkeys = gears.table.join(
   ),
 
   -- close client
-  awful.key({ modkey }, "q",
+  awful.key({ modkey }, "w",
     function(c)
       c:kill()
     end,
     { description = "close", group = "client" }
-  ),
-
-  -- Minimize
-  awful.key({ modkey }, "n",
-    function(c)
-      c.minimized = true
-    end,
-    { description = "minimize", group = "client" }
-  ),
-
-  -- Maximize
-  awful.key({ modkey }, "m",
-    function(c)
-      c.maximized = not c.maximized
-      c:raise()
-    end,
-    { description = "(un)maximize", group = "client" }
   )
 )
 

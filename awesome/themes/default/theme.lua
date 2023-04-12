@@ -2,52 +2,51 @@
 -- Default awesome theme --
 ---------------------------
 
-local gfs               = require("gears.filesystem")
-local themes_path       = gfs.get_themes_dir()
+local gfs                  = require("gears.filesystem")
+local themes_path          = gfs.get_configuration_dir() .. "/themes/default"
 
-local theme             = {}
+local theme                = {}
+theme.wallpaper            = themes_path .. "/Landscape.jpg"
 
-theme.font              = "JetBrainsMono NerdFont 10"
+-- Fonts & Wallpaper
+theme.font                 = "JetBrainsMono NerdFont 10"
 
 -- Background
-theme.bg_normal         = "#161616"
-theme.bg_focus          = "#535d6c"
-theme.bg_urgent         = "#ff0000"
-theme.bg_minimize       = "#444444"
-theme.bg_systray        = theme.bg_normal
+theme.bg_normal            = "#161616B5"
+theme.bg_alt               = "#373B41B5"
 
 -- Foreground
-theme.fg_normal         = "#aaaaaa"
-theme.fg_focus          = "#ffffff"
-theme.fg_urgent         = "#ffffff"
-theme.fg_minimize       = "#ffffff"
+theme.fg_normal            = "#979EAB"
+theme.fg_focus             = "#979EAB"
+theme.fg_urgent            = "#ff7a93"
+theme.fg_minimize          = "#979EAB"
+theme.fg_alt               = "#56B6C2"
+theme.fg_dim               = "#343B3a"
 
--- Gap and Borders
-theme.useless_gap       = 10
-theme.border_width      = 2
-theme.border_normal     = "#000000"
-theme.border_focus      = "#535d6c"
-theme.border_marked     = "#91231c"
+-- Tooltips
+theme.tooltip_bg           = theme.bg_normal
+theme.tooltip_fg           = theme.fg_normal
 
--- Wallpaper
-theme.wallpaper         = themes_path .. "default/background.png"
+-- Taglist
+theme.taglist_fg_focus     = "#CCD0D0"
+theme.taglist_fg_occupied  = "#686c69"
+theme.taglist_fg_empty     = "#343b3a"
+theme.taglist_spacing      = 15
+
+-- Gaps and Borders
+theme.useless_gap          = 7
+theme.border_width         = 2
+theme.border_normal        = theme.bg_normal
+theme.border_focus         = theme.fg_alt
+theme.border_marked        = "#ccd0d0"
+
+-- Systray
+theme.bg_systray           = theme.bg_normal
+theme.systray_icon_spacing = 5
 
 -- Layout icons
-theme.layout_fairh      = themes_path .. "default/layouts/fairhw.png"
-theme.layout_fairv      = themes_path .. "default/layouts/fairvw.png"
-theme.layout_floating   = themes_path .. "default/layouts/floatingw.png"
-theme.layout_magnifier  = themes_path .. "default/layouts/magnifierw.png"
-theme.layout_max        = themes_path .. "default/layouts/maxw.png"
-theme.layout_fullscreen = themes_path .. "default/layouts/fullscreenw.png"
-theme.layout_tilebottom = themes_path .. "default/layouts/tilebottomw.png"
-theme.layout_tileleft   = themes_path .. "default/layouts/tileleftw.png"
-theme.layout_tile       = themes_path .. "default/layouts/tilew.png"
-theme.layout_tiletop    = themes_path .. "default/layouts/tiletopw.png"
-theme.layout_spiral     = themes_path .. "default/layouts/spiralw.png"
-theme.layout_dwindle    = themes_path .. "default/layouts/dwindlew.png"
-theme.layout_cornernw   = themes_path .. "default/layouts/cornernww.png"
-theme.layout_cornerne   = themes_path .. "default/layouts/cornernew.png"
-theme.layout_cornersw   = themes_path .. "default/layouts/cornersww.png"
-theme.layout_cornerse   = themes_path .. "default/layouts/cornersew.png"
+theme.layout_floating      = themes_path .. "/layouts/floatingw.png"
+theme.layout_max           = themes_path .. "/layouts/maxw.png"
+theme.layout_tile          = themes_path .. "/layouts/tilew.png"
 
 return theme

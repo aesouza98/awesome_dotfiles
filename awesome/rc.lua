@@ -1,48 +1,15 @@
--- If LuaRocks is installed, make sure that packages installed through it are
--- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
-
--- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Theme handling library
 local beautiful = require("beautiful")
--- Notification library
 local naughty = require("naughty")
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
-
--- {{{ Error handling
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
-if awesome.startup_errors then
-    naughty.notify({
-        preset = naughty.config.presets.critical,
-        title = "Oops, there were errors during startup!",
-        text = awesome.startup_errors
-    })
-end
-
--- Handle runtime errors after startup
-do
-    local in_error = false
-    awesome.connect_signal("debug::error", function(err)
-        -- Make sure we don't go into an endless error loop
-        if in_error then return end
-        in_error = true
-
-        naughty.notify({
-            preset = naughty.config.presets.critical,
-            title = "Oops, an error happened!",
-            text = tostring(err)
-        })
-        in_error = false
-    end)
-end
 
 -- Define theme
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/default/theme.lua")
+
+-- Get correct locales
+os.setlocale(os.getenv("LANG"))
 
 -- Define applications
 apps = {
@@ -52,20 +19,26 @@ apps = {
     launcher = "rofi -show drun",
     lock = "i3lock",
     screenshot = "flameshot gui",
-    filebrowser = "thunar"
+    filebrowser = "thunar",
+    browser = "com.brave.Browser",
+    browser2 = "firefox",
 }
 
 -- ==============
 -- INITIALIZATION
 -- ==============
 
--- Init Theme
-
+-- define layouts
+awful.layout.layouts = {
+    awful.layout.suit.tile,
+    awful.layout.suit.floating,
+    awful.layout.suit.max,
+}
 -- Init Panel
 local panel = require("panel")
 panel.init()
 
--- {{{ Mouse bindings
+-- Mouse Bindings
 root.buttons(gears.table.join(
     awful.button({}, 4, awful.tag.viewnext),
     awful.button({}, 5, awful.tag.viewprev)
@@ -79,12 +52,11 @@ root.keys(keys.globalkeys)
 local create_rules = require("rules").create
 awful.rules.rules = create_rules(keys.clientkeys, keys.clientbuttons)
 
--- define layouts
-awful.layout.layouts = {
-    awful.layout.suit.tile,
-    awful.layout.suit.floating,
-    awful.layout.suit.max,
-}
+-- Set wallpaper
+local wallpaper = require("wallpaper")
+wallpaper.set()
+screen.connect_signal("property::geometry", wallpaper.set)
+
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
     if awesome.startup
@@ -109,6 +81,13 @@ screen.connect_signal("property::geometry", awesome.restart)
 -- Garbage collection (allows for lower memory consumption)
 -- ===================================================================
 
-
 collectgarbage("setpause", 110)
 collectgarbage("setstepmul", 1000)
+
+-- Autostart
+local function run_once(cmd_arr)
+    for _, cmd in ipairs(cmd_arr) do
+        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
+    end
+end
+run_once({ "picom -f", "dualmonitor", "pamac-tray", "dunst" })
