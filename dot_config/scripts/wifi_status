@@ -1,0 +1,9 @@
+#!/bin/bash 
+
+ssid=$(nmcli -t -f NAME connection show --active | head -n1)
+
+if [[ $ssid == "" ]]; then
+  printf "睊 disconected"
+else
+  printf "  $ssid"
+fi

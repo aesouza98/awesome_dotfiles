@@ -1,0 +1,16 @@
+#!/bin/bash
+
+pamixer --list-sources | grep -i kraken >/dev/null
+if [ $? == 0 ]; then
+	sink=$(pamixer --list-sources | grep "Kraken" | grep -v "Monitor" | awk \{'print $1'\})
+else
+	sink=$(pamixer --list-sources | grep "Tiger Lake-LP Smart Sound Technology Audio Controller Digital Microphone" | awk \{'print $1'\})
+fi
+
+micvolume=$(pamixer --source $sink --get-volume)
+
+	if [[ $(pamixer --source $sink --get-mute) == "true" ]]; then
+		echo -n "  "
+	else
+		echo -n "  "
+	fi

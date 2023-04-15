@@ -1,0 +1,9 @@
+#!/bin/bash
+
+CMD=$(pamixer --default-source --get-mute)
+
+if [[ $CMD == "true" ]]; then
+		echo -n 
+else
+		echo -n 
+fi

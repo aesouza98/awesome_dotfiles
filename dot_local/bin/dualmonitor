@@ -1,0 +1,12 @@
+#!/bin/bash
+
+status=$(/bin/cat /proc/acpi/button/lid/LID0/state | awk {'print $2'})
+monitor=$(xrandr --query | grep 'HDMI-1' | awk {'print $2'})
+
+if [[ $status == "closed" && $monitor == "connected" ]]; then
+		xrandr --output eDP-1 --off --output HDMI-1 --mode 1920x1080 --primary
+elif [[ $status == "open" && $monitor == "connected" ]]; then
+		xrandr --output eDP-1 --mode 1920x1080 --primary --output HDMI-1 --mode 1920x1080 --right-of eDP-1
+elif [[ $monitor != "connected" ]]; then
+		xrandr --output eDP-1 --mode 1920x1080 --primary --output HDMI-1 --off
+fi

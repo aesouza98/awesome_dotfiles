@@ -1,0 +1,33 @@
+#Aliases
+### É difícil digitar clear
+alias clera='clear'
+alias claer='clear'
+alias clrea='clear'
+alias celar='clear'
+alias caler='clear'
+alias clrae='clear'
+alias clrea='clear'
+alias clare='clear'
+
+#Addons
+alias ls='exa --icons -s type'
+alias find='fd'
+alias grep='rg'
+alias cat='bat --style=auto'
+alias ccat='bat -pp'
+alias vim='nvim'
+alias c='z'
+alias emacs='emacs -nw'
+
+#Packages
+alias finstall='flatpak install'
+alias fsearch='flatpak search'
+alias fremove='flatpak remove'
+
+#Others
+alias ping='ping -i 0.2'
+alias kde-restart='kquitapp5 plasmashell && kstart plasmashell'
+
+#Programs
+alias notes='nvim ~/Documentos/Vault/aiqfome/'
+

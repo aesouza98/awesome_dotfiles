@@ -1,0 +1,11 @@
+#!/bin/bash
+
+vpn=$(pgrep -a ^openvpn | head -n 1 | awk '{print $NF }' | cut -d '.' -f 1)
+
+if [[ $vpn == "" ]]; then
+  vpn=' down'
+elif [[ $vpn == "/home/adriano/Documentos/aiqfome/vpn/aiqfome_adriano" ]]; then
+  vpn=' aiqfome'
+fi
+
+echo -n $vpn

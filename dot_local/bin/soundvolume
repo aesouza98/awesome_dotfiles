@@ -1,0 +1,28 @@
+#!/bin/bash
+
+function send_notification() {
+	volume=$(pamixer --get-volume | awk {'print $1'})
+	dunstify -a "changevolume" -u low -r "9993" -h int:value:"$volume" -i "~/.local/share/icons/volume-$1.svg" "Volume: ${volume}%" -t 2000
+}
+
+case $1 in
+up)
+	# Set the volume on (if it was muted)
+	pamixer --unmute
+	pamixer -i 2
+	send_notification $1
+	;;
+down)
+	pamixer --unmute
+	pamixer -d 2
+	send_notification $1
+	;;
+mute)
+	pamixer --toggle-mute
+	if [[ $(pamixer --get-mute) == "true" ]]; then
+		dunstify -i volume-mute -a "changevolume" -t 2000 -r 9993 -u low -i "~/.local/share/icons/volume-mute.svg" "Speaker Muted"
+	else
+		send_notification up
+	fi
+	;;
+esac

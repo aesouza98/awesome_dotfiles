@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pamixer --default-source --toggle-mute
+
+if [[ $(pamixer --default-source --get-mute) == "true" ]]; then
+	dunstify -i volume-mute -a "changevolume" -t 2000 -r 9994 -u low " Microphone Muted"
+else
+	dunstify -i volume-mute -a "changevolume" -t 2000 -r 9994 -u low " Microphone On"
+fi

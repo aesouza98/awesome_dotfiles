@@ -1,0 +1,4 @@
+#!/bin/bash
+
+bright=$(brightnessctl | grep Current | cut -d '(' -f2 | cut -d ')' -f1)
+echo -n " $bright"
